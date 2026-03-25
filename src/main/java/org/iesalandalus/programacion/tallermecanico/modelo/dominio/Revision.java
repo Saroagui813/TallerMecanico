@@ -1,4 +1,4 @@
-/*package org.iesalandalus.programacion.tallermecanico.modelo.dominio;
+package org.iesalandalus.programacion.tallermecanico.modelo.dominio;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +22,10 @@ public class Revision {
 
     }
 
+    public Revision(Revision revision){
+
+    }
+
     public Cliente getCliente(){
         return cliente;
     }
@@ -35,8 +39,72 @@ public class Revision {
         return vehiculo;
     }
 
-    private void setVehiculo(){
+    private void setVehiculo() {
 
     }
+
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
+    }
+
+    private void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public LocalDate getFechaFin() {
+        return fechaFin;
+    }
+
+    private void setFechaFin(LocalDate fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public int getHoras() {
+        return horas;
+    }
+
+    public void anadirHoras(int horas) {
+
+    }
+
+    public float getPrecioMaterial() {
+        return precioMaterial;
+    }
+
+    public void anadirPrecioMaterial(float precioMaterial) {
+
+    }
+
+    public boolean estaCerrada() {
+        return true;
+    }
+
+    public void cerrar(LocalDate fechaFin) {
+
+    }
+
+    public float getPrecio() {
+
+    }
+
+    private float getDias() {
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Revision revision = (Revision) o;
+        return horas == revision.horas && Float.compare(precioMaterial, revision.precioMaterial) == 0 && Objects.equals(cliente, revision.cliente) && Objects.equals(vehiculo, revision.vehiculo) && Objects.equals(fechaInicio, revision.fechaInicio) && Objects.equals(fechaFin, revision.fechaFin);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cliente, vehiculo, fechaInicio, fechaFin, horas, precioMaterial);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Revision (cliente=%s, vehiculo=%s, fechaInicio=%s, fechaFin=%s, horas=%s, precioMaterial=%s)", cliente, vehiculo, fechaInicio, fechaFin, horas, precioMaterial);
+    }
 }
-*/
