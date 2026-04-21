@@ -18,7 +18,7 @@ public class Revision {
 
     public Revision(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio){
         setCliente(cliente);
-        setVehiculo(vehiculo);
+        setVehiculo(vehicu);
         setFechaInicio(fechaInicio);
     }
 
