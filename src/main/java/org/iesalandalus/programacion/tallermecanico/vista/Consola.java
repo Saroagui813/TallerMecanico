@@ -1,15 +1,13 @@
 package org.iesalandalus.programacion.tallermecanico.vista;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Revision;
+import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Trabajo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
 import org.iesalandalus.programacion.utilidades.Entrada;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.function.LongConsumer;
 
 public class Consola {
 
@@ -102,11 +100,11 @@ public class Consola {
         return Vehiculo.get(leerCadena("Introduce la matricula del vehículo."));
     }
 
-    public static Revision leerRevision() {
+    public static Trabajo leerRevision() {
         Cliente cliente = leerClienteDni();
         Vehiculo vehiculo = leerVehiculoMatricula();
         LocalDate fechaInicio = leerFecha("Introduce la fecha de inicio");
-        return new Revision(cliente, vehiculo, fechaInicio);
+        return new Trabajo(cliente, vehiculo, fechaInicio);
     }
 
     public static int leerHoras() {

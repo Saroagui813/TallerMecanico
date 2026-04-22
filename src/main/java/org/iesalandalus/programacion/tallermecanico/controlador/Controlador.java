@@ -3,13 +3,12 @@ package org.iesalandalus.programacion.tallermecanico.controlador;
 import org.iesalandalus.programacion.tallermecanico.modelo.Modelo;
 import org.iesalandalus.programacion.tallermecanico.modelo.TallerMecanicoExcepcion;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Revision;
+import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Trabajo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
 import org.iesalandalus.programacion.tallermecanico.vista.Vista;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 public class Controlador {
@@ -22,7 +21,7 @@ public class Controlador {
         Objects.requireNonNull(vista, "ERROR: La vista no puede ser nula.");
         this.modelo = modelo;
         this.vista = vista;
-        this.vista.setControlador(this);
+        vista.setControlador(this);
     }
 
     public void comenzar() {
@@ -43,8 +42,8 @@ public class Controlador {
         modelo.insertar(vehiculo);
     }
 
-    public void insertar(Revision revision) throws TallerMecanicoExcepcion {
-        modelo.insertar(revision);
+    public void insertar(Trabajo trabajo) throws TallerMecanicoExcepcion {
+        modelo.insertar(trabajo);
     }
 
     public Cliente buscar(Cliente cliente) throws TallerMecanicoExcepcion {
@@ -55,24 +54,24 @@ public class Controlador {
         return modelo.buscar(vehiculo);
     }
 
-    public Revision buscar(Revision revision) throws TallerMecanicoExcepcion {
-        return modelo.buscar(revision);
+    public Trabajo buscar(Trabajo trabajo) throws TallerMecanicoExcepcion {
+        return modelo.buscar(trabajo);
     }
 
     public Cliente modificar(Cliente cliente, String nombre, String telefono) throws TallerMecanicoExcepcion {
         return modelo.modificar(cliente, nombre, telefono);
     }
 
-    public Revision anadirHoras(Revision revision, int horas) throws TallerMecanicoExcepcion {
-        return modelo.anadirHoras(revision, horas);
+    public Trabajo anadirHoras(Trabajo trabajo, int horas) throws TallerMecanicoExcepcion {
+        return modelo.anadirHoras(trabajo, horas);
     }
 
-    public Revision anadirPrecioMaterial(Revision revision, float precioMaterial) throws TallerMecanicoExcepcion {
-        return modelo.anadirPrecioMaterial(revision, precioMaterial);
+    public Trabajo anadirPrecioMaterial(Trabajo trabajo, float precioMaterial) throws TallerMecanicoExcepcion {
+        return modelo.anadirPrecioMaterial(trabajo, precioMaterial);
     }
 
-    public Revision cerrar(Revision revision, LocalDate fechaFin) throws TallerMecanicoExcepcion {
-        return modelo.cerrar(revision, fechaFin);
+    public Trabajo cerrar(Trabajo trabajo, LocalDate fechaFin) throws TallerMecanicoExcepcion {
+        return modelo.cerrar(trabajo, fechaFin);
     }
 
     public void borrar(Cliente cliente) throws TallerMecanicoExcepcion {
@@ -83,27 +82,27 @@ public class Controlador {
         modelo.borrar(vehiculo);
     }
 
-    public void borrar(Revision revision) throws TallerMecanicoExcepcion {
-        modelo.borrar(revision);
+    public void borrar(Trabajo trabajo) throws TallerMecanicoExcepcion {
+        modelo.borrar(trabajo);
     }
 
-    public List<Cliente> getClientes() {
+    public List<Cliente> listarClientes() {
         return modelo.getClientes();
     }
 
-    public List<Vehiculo> getVehiculos() {
+    public List<Vehiculo> listarVehiculos() {
         return modelo.getVehiculos();
     }
 
-    public List<Revision> getRevisiones() {
+    public List<Trabajo> listarRevisionesVehiculo() {
         return modelo.getRevisiones();
     }
 
-    public List<Revision> getRevisiones(Cliente cliente) {
+    public List<Trabajo> listarRevisionesVehiculo(Cliente cliente) {
         return modelo.getRevisiones(cliente);
     }
 
-    public List<Revision> getRevisiones(Vehiculo vehiculo) {
+    public List<Trabajo> listarRevisionesVehiculo(Vehiculo vehiculo) {
         return modelo.getRevisiones(vehiculo);
     }
 }
