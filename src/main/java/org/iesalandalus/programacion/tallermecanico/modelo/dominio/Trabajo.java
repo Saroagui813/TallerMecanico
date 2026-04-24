@@ -8,35 +8,48 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public abstract class Trabajo {
-    public static final float PRECIO_HORA = 30F;
-    public static final float PRECIO_DIA = 10F;
-    public static final float PRECIO_MATERIAL = 1.5F;
     static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private final float FACTOR_DIA = 35f;
 
     private Cliente cliente;
     private Vehiculo vehiculo;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private int horas;
-    private float precioMaterial;
 
-    public Trabajo(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio){
+    protected Trabajo(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio){
         setCliente(cliente);
         setVehiculo(vehiculo);
         setFechaInicio(fechaInicio);
         fechaFin = null;
         horas = 0;
-        precioMaterial = 0;
     }
 
-    public Trabajo(Trabajo trabajo){
-        Objects.requireNonNull(trabajo, "La revisión no puede ser nula.");
+    protected Trabajo(Trabajo trabajo){
+        Objects.requireNonNull(trabajo, "La trabajo no puede ser nulo.");
         fechaInicio = trabajo.fechaInicio;
         horas = trabajo.horas;
-        precioMaterial = trabajo.precioMaterial;
         cliente = new Cliente(trabajo.cliente);
         vehiculo = trabajo.vehiculo;
         fechaFin = trabajo.fechaFin;
+    }
+
+    public static Trabajo copiar(Trabajo trabajo) {
+        Objects.requireNonNull(trabajo, "El trabajo no puede ser nulo.");
+        if (trabajo instanceof Revision) {
+            return (Revision) trabajo;
+        }
+        if (trabajo instanceof Mecanico) {
+            return (Mecanico) trabajo;
+        }
+        return trabajo;
+    }
+
+    public static Trabajo get(Vehiculo vehiculo) {
+        Cliente cliente1 = new Cliente("Samuel", "77652349D", "722111111");
+        LocalDate fechaInicio = LocalDate.now();
+        Trabajo trabajo = new Trabajo(cliente1, vehiculo, fechaInicio);
+        return trabajo;
     }
 
     public Cliente getCliente(){
@@ -92,39 +105,29 @@ public abstract class Trabajo {
         if (horas <= 0) {
             throw new IllegalArgumentException("Las horas a añadir deben ser mayores que cero.");
         }
-        if (estaCerrada()) {
+        if (estaCerrado()) {
             throw new TallerMecanicoExcepcion("No se puede añadir horas, ya que la revisión está cerrada.");
         }
         this.horas = horas + getHoras();
     }
 
-    public float getPrecioMaterial() {
-        return precioMaterial;
-    }
-
-    public void anadirPrecioMaterial(float precioMaterial) throws TallerMecanicoExcepcion {
-        if (precioMaterial <= 0) {
-            throw new IllegalArgumentException("El precio del material a añadir deben ser mayores que cero.");
-        }
-        if (estaCerrada()) {
-            throw new TallerMecanicoExcepcion("No se puede añadir precio del material, ya que la revisión está cerrada.");
-        }
-        this.precioMaterial = precioMaterial + getPrecioMaterial();
-    }
-
-    public boolean estaCerrada() {
+    public boolean estaCerrado() {
         return fechaFin != null;
     }
 
     public void cerrar(LocalDate fechaFin) throws TallerMecanicoExcepcion {
-        if (estaCerrada()) {
+        if (estaCerrado()) {
             throw new TallerMecanicoExcepcion("La revisión ya está cerrada.");
         }
         setFechaFin(fechaFin);
     }
 
     public float getPrecio() {
-        return (estaCerrada() ? ((getHoras() * PRECIO_HORA) + (getDias() * PRECIO_DIA) + (precioMaterial * PRECIO_MATERIAL)) : 0);
+        return getPrecioEspecifico() + getPrecioFijo();
+    }
+
+    private float getPrecioFijo() {
+        return getDias() * 10;
     }
 
     private float getDias() {
@@ -141,23 +144,12 @@ public abstract class Trabajo {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Trabajo trabajo = (Trabajo) o;
-        return horas == trabajo.horas && Float.compare(precioMaterial, trabajo.precioMaterial) == 0 && Objects.equals(cliente, trabajo.cliente) && Objects.equals(vehiculo, trabajo.vehiculo) && Objects.equals(fechaInicio, trabajo.fechaInicio) && Objects.equals(fechaFin, trabajo.fechaFin);
+        return Float.compare(FACTOR_DIA, trabajo.FACTOR_DIA) == 0 && horas == trabajo.horas && Objects.equals(cliente, trabajo.cliente) && Objects.equals(vehiculo, trabajo.vehiculo) && Objects.equals(fechaInicio, trabajo.fechaInicio) && Objects.equals(fechaFin, trabajo.fechaFin);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cliente, vehiculo, fechaInicio);
-    }
-
-    @Override
-    public String toString() {
-        String cadena;
-        if (!estaCerrada()) {
-            cadena = String.format("%s - %s: (%s - ), %s horas, %.2f € en material", getCliente(), getVehiculo(), getFechaInicio().format(FORMATO_FECHA), getHoras(), precioMaterial);
-        } else {
-            cadena = String.format("%s - %s: (%s - %s), %s horas, %.2f € en material, %.2f € total", getCliente(), getVehiculo(), getFechaInicio().format(FORMATO_FECHA), getFechaFin().format(FORMATO_FECHA), getHoras(), precioMaterial, getPrecio());
-        }
-        return cadena;
+        return Objects.hash(FACTOR_DIA, cliente, vehiculo, fechaInicio, fechaFin, horas);
     }
 
     public abstract float getPrecioEspecifico();

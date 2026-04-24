@@ -58,7 +58,7 @@ public class Revisiones {
         Objects.requireNonNull(vehiculo, "El vehículo no puede ser nulo.");
 
         for (Trabajo trabajo : coleccionRevisiones) {
-            if (!trabajo.estaCerrada()) {
+            if (!trabajo.estaCerrado()) {
                 if (trabajo.getCliente().equals(cliente)) {
                     throw new TallerMecanicoExcepcion("El cliente tiene otra revisión en curso.");
                 }
@@ -67,7 +67,7 @@ public class Revisiones {
                 }
             }
 
-            if (trabajo.estaCerrada()) {
+            if (trabajo.estaCerrado()) {
                 if (fechaRevision.isAfter(trabajo.getFechaFin())) {
                     if (trabajo.getCliente().equals(cliente)) {
                         throw new TallerMecanicoExcepcion("El cliente tiene una revisión posterior.");
