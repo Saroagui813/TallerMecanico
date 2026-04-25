@@ -10,8 +10,8 @@ public class Revision extends Trabajo{
         super(cliente, vehiculo, fechaInicio);
     }
 
-    protected Revision(Trabajo trabajo) {
-        super(trabajo);
+    protected Revision(Revision revision) {
+        super(revision);
     }
 
     @Override
@@ -23,9 +23,9 @@ public class Revision extends Trabajo{
     public String toString() {
         String cadena;
         if (!estaCerrado()) {
-            cadena = String.format("%s - %s: (%s - ), %s horas", getCliente(), getVehiculo(), getFechaInicio().format(FORMATO_FECHA), getHoras());
+            cadena = String.format("Revisión -> %s - %s (%s - ): %s horas", getCliente(), getVehiculo(), getFechaInicio().format(FORMATO_FECHA), getHoras());
         } else {
-            cadena = String.format("%s - %s: (%s - %s), %s horas, %.2f € total", getCliente(), getVehiculo(), getFechaInicio().format(FORMATO_FECHA), getFechaFin().format(FORMATO_FECHA), getHoras(), getPrecio());
+            cadena = String.format("Revisión -> %s - %s (%s - %s): %s horas, %.2f € total", getCliente(), getVehiculo(), getFechaInicio().format(FORMATO_FECHA), getFechaFin().format(FORMATO_FECHA), getHoras(), getPrecio());
         }
         return cadena;
     }
