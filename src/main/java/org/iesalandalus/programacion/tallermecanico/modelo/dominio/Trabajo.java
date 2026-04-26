@@ -116,7 +116,7 @@ public abstract class Trabajo {
 
     public void cerrar(LocalDate fechaFin) throws TallerMecanicoExcepcion {
         if (estaCerrado()) {
-            throw new TallerMecanicoExcepcion("La revisión ya está cerrada.");
+            throw new TallerMecanicoExcepcion("El trabajo ya está cerrado.");
         }
         setFechaFin(fechaFin);
     }
