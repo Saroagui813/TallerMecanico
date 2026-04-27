@@ -3,9 +3,9 @@ package org.iesalandalus.programacion.tallermecanico.modelo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Trabajo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.Clientes;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.Revisiones;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.Vehiculos;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Clientes;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Trabajos;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Vehiculos;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.Objects;
 public class Modelo {
 
     private Clientes clientes;
-    private Revisiones revisiones;
+    private Trabajos trabajos;
     private Vehiculos  vehiculos;
 
     public Modelo() {
@@ -24,7 +24,7 @@ public class Modelo {
 
     public void comenzar() {
         this.clientes = new Clientes();
-        this.revisiones = new Revisiones();
+        this.trabajos = new Trabajos();
         this.vehiculos = new Vehiculos();
     }
 
@@ -46,7 +46,7 @@ public class Modelo {
         Objects.requireNonNull(trabajo, "La revisión no puede ser nula.");
         Cliente clienteReal = clientes.buscar(trabajo.getCliente());
         Vehiculo vehiculoReal = vehiculos.buscar(trabajo.getVehiculo());
-        revisiones.insertar(new Trabajo(clienteReal, vehiculoReal, trabajo.getFechaInicio()));
+        trabajos.insertar(new Trabajo(clienteReal, vehiculoReal, trabajo.getFechaInicio()));
     }
 
     public Cliente buscar(Cliente cliente) throws TallerMecanicoExcepcion {
@@ -62,7 +62,7 @@ public class Modelo {
 
     public Trabajo buscar(Trabajo trabajo) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(trabajo, "La revisión no puede ser nula.");
-        Trabajo encontrada = revisiones.buscar(trabajo);
+        Trabajo encontrada = trabajos.buscar(trabajo);
         return new Trabajo(encontrada);
     }
 
@@ -75,40 +75,40 @@ public class Modelo {
 
     public Trabajo anadirHoras(Trabajo trabajo, int horas) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(trabajo,"La revisión no puede ser nula.");
-        return new Trabajo(revisiones.anadirHoras(trabajo, horas));
+        return new Trabajo(trabajos.anadirHoras(trabajo, horas));
     }
 
     public Trabajo anadirPrecioMaterial(Trabajo trabajo, float precioMaterial) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(trabajo, "La revisión no puede ser nula.");
-        return new Trabajo(revisiones.anadirPrecioMaterial(trabajo, precioMaterial));
+        return new Trabajo(trabajos.anadirPrecioMaterial(trabajo, precioMaterial));
     }
 
     public Trabajo cerrar(Trabajo trabajo, LocalDate fechaFin) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(trabajo, "La revisión no puede ser nula.");
-        return new Trabajo(revisiones.cerrar(trabajo, fechaFin));
+        return new Trabajo(trabajos.cerrar(trabajo, fechaFin));
     }
 
     public void borrar(Cliente cliente) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(cliente, "El cliente no puede ser nulo.");
-        List<Trabajo> revisionesCliente = revisiones.get(cliente);
+        List<Trabajo> revisionesCliente = trabajos.get(cliente);
         for (Trabajo trabajo : revisionesCliente) {
-            revisiones.borrar(trabajo);
+            trabajos.borrar(trabajo);
         }
         clientes.borrar(cliente);
     }
 
     public void borrar(Vehiculo vehiculo) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(vehiculo, "El vehículo no puede ser nulo.");
-        List<Trabajo> revisionesVehiculo = revisiones.get(vehiculo);
+        List<Trabajo> revisionesVehiculo = trabajos.get(vehiculo);
         for (Trabajo trabajo : revisionesVehiculo) {
-            revisiones.borrar(trabajo);
+            trabajos.borrar(trabajo);
         }
         vehiculos.borrar(vehiculo);
     }
 
     public void borrar(Trabajo trabajo) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(trabajo, "La revisión no puede ser nula.");
-        revisiones.borrar(trabajo);
+        trabajos.borrar(trabajo);
     }
 
     public List<Cliente> getClientes() {
@@ -129,7 +129,7 @@ public class Modelo {
 
     public List<Trabajo> getRevisiones() {
         List<Trabajo> copia = new ArrayList<>();
-        for (Trabajo trabajo : revisiones.get()) {
+        for (Trabajo trabajo : trabajos.get()) {
             copia.add(new Trabajo(trabajo));
         }
         return copia;
