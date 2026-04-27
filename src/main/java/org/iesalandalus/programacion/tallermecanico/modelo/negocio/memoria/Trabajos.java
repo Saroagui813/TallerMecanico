@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Trabajos {
+public class Trabajos implements org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos {
 
     private List<Trabajo> coleccionTrabajos;
 
@@ -16,10 +16,12 @@ public class Trabajos {
         coleccionTrabajos = new ArrayList<>();
     }
 
+    @Override
     public List<Trabajo> get() {
         return new ArrayList<>(coleccionTrabajos);
     }
 
+    @Override
     public List<Trabajo> get(Cliente cliente) {
         List<Trabajo> coleccionResultante;
         coleccionResultante = new ArrayList<>();
@@ -32,6 +34,7 @@ public class Trabajos {
 
         return coleccionResultante;
     }
+    @Override
     public List<Trabajo> get(Vehiculo vehiculo) {
 
         List<Trabajo> coleccionResultante;
@@ -45,8 +48,9 @@ public class Trabajos {
         return coleccionResultante;
     }
 
+    @Override
     public void insertar(Trabajo trabajo) throws TallerMecanicoExcepcion {
-        Objects.requireNonNull(trabajo, "No se puede insertar una revisión nula.");
+        Objects.requireNonNull(trabajo, "No se puede insertar un trabajo nulo.");
         comprobarTrabajo(trabajo.getCliente(), trabajo.getVehiculo(), trabajo.getFechaInicio());
         coleccionTrabajos.add(trabajo);
     }
@@ -58,10 +62,10 @@ public class Trabajos {
         for (Trabajo trabajo : coleccionTrabajos) {
             if (!trabajo.estaCerrado()) {
                 if (trabajo.getCliente().equals(cliente)) {
-                    throw new TallerMecanicoExcepcion("El cliente tiene otra revisión en curso.");
+                    throw new TallerMecanicoExcepcion("El cliente tiene otro trabajo en curso.");
                 }
                 if (trabajo.getVehiculo().equals(vehiculo)) {
-                    throw new TallerMecanicoExcepcion("El vehículo está actualmente en revisión.");
+                    throw new TallerMecanicoExcepcion("El vehículo está actualmente en el taller.");
                 }
             }
 
@@ -71,24 +75,20 @@ public class Trabajos {
                         throw new TallerMecanicoExcepcion("El cliente tiene una revisión posterior.");
                     }
                     if (trabajo.getVehiculo().equals(vehiculo)) {
-                        throw new TallerMecanicoExcepcion("El vehículo está actualmente en revisión.");
+                        throw new TallerMecanicoExcepcion("El vehículo está actualmente en el taller.");
                     }
                 }
             }
         }
     }
 
-//    public Trabajo anadirHoras(Trabajo trabajo, int horas) throws TallerMecanicoExcepcion {
-//        Trabajo trabajo1 = getTrabajoAbierto(trabajo.getVehiculo());
-//        if (trabajo instanceof Revision revision) {
-//            trabajo1 = new Revision(revision.anadirHoras(horas));
-//        }
-//        if (trabajo instanceof Mecanico mecanico) {
-//            return new Mecanico(mecanico);
-//        }
-//        trabajo1.anadirHoras(horas);
-//        return trabajo1;
-//    }
+    @Override
+    public Trabajo anadirHoras(Trabajo trabajo, int horas) throws TallerMecanicoExcepcion {
+        Objects.requireNonNull(trabajo, "No puedo añadir horas a un trabajo nulo.");
+        Trabajo trabajo1 = getTrabajoAbierto(trabajo.getVehiculo());
+        trabajo1.anadirHoras(horas);
+        return trabajo1;
+    }
 
     private Trabajo getTrabajoAbierto(Vehiculo vehiculo) throws TallerMecanicoExcepcion {
         Trabajo trabajoResultado = null;
@@ -100,38 +100,52 @@ public class Trabajos {
         }
 
         if (trabajoResultado == null) {
-            throw new TallerMecanicoExcepcion("No existe ninguna revisión igual.");
+            throw new TallerMecanicoExcepcion("No existe ningún trabajo abierto para dicho vehículo.");
         }
 
         return trabajoResultado;
     }
 
+    @Override
     public Trabajo anadirPrecioMaterial(Trabajo trabajo, float precioMaterial) throws TallerMecanicoExcepcion {
-        Trabajo trabajo1 = trabajo.ge;
-        trabajo1.getPrecioEspecifico();
+        Objects.requireNonNull(trabajo, "No puedo añadir precio del material a un trabajo nulo.");
+        Trabajo trabajo1 = getTrabajoAbierto(trabajo.getVehiculo());
+        if (trabajo1 instanceof Mecanico mecanico) {
+            mecanico.anadirPrecioMaterial(precioMaterial);
+        } else {
+            throw new TallerMecanicoExcepcion("No se puede añadir precio al material para este tipo de trabajos.");
+        }
         return trabajo1;
     }
 
+    @Override
     public Trabajo cerrar(Trabajo trabajo, LocalDate fechaFin) throws TallerMecanicoExcepcion {
-        Trabajo trabajo1 = getTrabajoAbierto(trabajo);
-        trabajo1.cerrar(fechaFin);
+        Objects.requireNonNull(trabajo, "No puedo cerrar un trabajo nulo.");
+        Trabajo trabajo1 = getTrabajoAbierto(trabajo.getVehiculo());
+        if (fechaFin.isAfter(trabajo1.getFechaFin())) {
+            throw new TallerMecanicoExcepcion("No existe ningún trabajo abierto para dicho vehículo.");
+        } else {
+            trabajo1.cerrar(fechaFin);
+        }
         return trabajo1;
     }
 
+    @Override
     public Trabajo buscar(Trabajo trabajo) {
-        Objects.requireNonNull(trabajo, "No se puede buscar una revisión nula.");
+        Objects.requireNonNull(trabajo, "No se puede buscar un trabajo nulo.");
         int indice = coleccionTrabajos.indexOf(trabajo);
-        return (indice != 1 ? coleccionTrabajos.get(indice) : null);
+        return coleccionTrabajos.get(indice);
     }
 
+    @Override
     public void borrar(Trabajo trabajo) throws TallerMecanicoExcepcion {
-        Objects.requireNonNull(trabajo, "No se puede borrar una revisión nula.");
+        Objects.requireNonNull(trabajo, "No se puede borrar un trabajo nulo.");
         Trabajo buscando = buscar(trabajo);
 
         if (!coleccionTrabajos.contains(buscando)) {
-            throw new TallerMecanicoExcepcion("No existe alguna revisión igual.");
+            throw new TallerMecanicoExcepcion("No existe ningún trabajo igual.");
         }
 
-        coleccionTrabajos.remove(trabajo);
+        coleccionTrabajos.remove(buscando);
     }
 }

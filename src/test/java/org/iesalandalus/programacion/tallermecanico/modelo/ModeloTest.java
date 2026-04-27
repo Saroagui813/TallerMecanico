@@ -1,6 +1,9 @@
 package org.iesalandalus.programacion.tallermecanico.modelo;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IClientes;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IVehiculos;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Clientes;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Trabajos;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Vehiculos;
@@ -35,11 +38,11 @@ class ModeloTest {
 
     private AutoCloseable procesadorAnotaciones;
     private MockedConstruction<Cliente> controladorCreacionMockCliente;
-    private MockedConstruction<Clientes> controladorCreacionMockClientes;
-    private MockedConstruction<Vehiculos> controladorCreacionMockVehiculos;
+    private MockedConstruction<IClientes> controladorCreacionMockClientes;
+    private MockedConstruction<IVehiculos> controladorCreacionMockVehiculos;
     private MockedConstruction<Trabajo> controladorCreacionMockRevision;
     private MockedConstruction<Mecanico> controladorCreacionMockMecanico;
-    private MockedConstruction<Trabajos> controladorCreacionMockTrabajos;
+    private MockedConstruction<ITrabajos> controladorCreacionMockTrabajos;
 
 
     @BeforeAll

@@ -3,6 +3,9 @@ package org.iesalandalus.programacion.tallermecanico.modelo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Trabajo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IClientes;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IVehiculos;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Clientes;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Trabajos;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Vehiculos;
@@ -14,18 +17,18 @@ import java.util.Objects;
 
 public class Modelo {
 
-    private Clientes clientes;
-    private Trabajos trabajos;
-    private Vehiculos  vehiculos;
+    private IClientes IClientes;
+    private ITrabajos trabajos;
+    private IVehiculos IVehiculos;
 
     public Modelo() {
 
     }
 
     public void comenzar() {
-        this.clientes = new Clientes();
+        this.IClientes = new Clientes();
         this.trabajos = new Trabajos();
-        this.vehiculos = new Vehiculos();
+        this.IVehiculos = new Vehiculos();
     }
 
     public void terminar() {
@@ -34,30 +37,30 @@ public class Modelo {
 
     public void insertar(Cliente cliente) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(cliente, "El cliente no puede ser nulo.");
-        clientes.insertar(new Cliente(cliente));
+        IClientes.insertar(new Cliente(cliente));
     }
 
     public void insertar(Vehiculo vehiculo) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(vehiculo, "El vehículo no puede ser nulo.");
-        vehiculos.insertar(vehiculo);
+        IVehiculos.insertar(vehiculo);
     }
 
     public void insertar(Trabajo trabajo) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(trabajo, "La revisión no puede ser nula.");
-        Cliente clienteReal = clientes.buscar(trabajo.getCliente());
-        Vehiculo vehiculoReal = vehiculos.buscar(trabajo.getVehiculo());
+        Cliente clienteReal = IClientes.buscar(trabajo.getCliente());
+        Vehiculo vehiculoReal = IVehiculos.buscar(trabajo.getVehiculo());
         trabajos.insertar(new Trabajo(clienteReal, vehiculoReal, trabajo.getFechaInicio()));
     }
 
     public Cliente buscar(Cliente cliente) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(cliente, "El cliente no puede ser nulo.");
-        Cliente encontrado = clientes.buscar(cliente);
+        Cliente encontrado = IClientes.buscar(cliente);
         return new Cliente(encontrado);
     }
 
     public Vehiculo buscar(Vehiculo vehiculo) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(vehiculo, "El vehículo no puede ser nulo.");
-        return vehiculos.buscar(vehiculo);
+        return IVehiculos.buscar(vehiculo);
     }
 
     public Trabajo buscar(Trabajo trabajo) throws TallerMecanicoExcepcion {
@@ -70,7 +73,7 @@ public class Modelo {
         Objects.requireNonNull(cliente, "El cliente no puede ser nulo.");
         Objects.requireNonNull(nombre, "El nombre no puede ser nulo.");
         Objects.requireNonNull(telefono, "El teléfono no puede ser nulo.");
-        return new Cliente(clientes.modificar(cliente, nombre, telefono));
+        return new Cliente(IClientes.modificar(cliente, nombre, telefono));
     }
 
     public Trabajo anadirHoras(Trabajo trabajo, int horas) throws TallerMecanicoExcepcion {
@@ -94,7 +97,7 @@ public class Modelo {
         for (Trabajo trabajo : revisionesCliente) {
             trabajos.borrar(trabajo);
         }
-        clientes.borrar(cliente);
+        IClientes.borrar(cliente);
     }
 
     public void borrar(Vehiculo vehiculo) throws TallerMecanicoExcepcion {
@@ -103,7 +106,7 @@ public class Modelo {
         for (Trabajo trabajo : revisionesVehiculo) {
             trabajos.borrar(trabajo);
         }
-        vehiculos.borrar(vehiculo);
+        IVehiculos.borrar(vehiculo);
     }
 
     public void borrar(Trabajo trabajo) throws TallerMecanicoExcepcion {
@@ -113,7 +116,7 @@ public class Modelo {
 
     public List<Cliente> getClientes() {
         List<Cliente> copia = new ArrayList<>();
-        for (Cliente cliente : clientes.get()) {
+        for (Cliente cliente : IClientes.get()) {
             copia.add(new Cliente(cliente));
         }
         return copia;
@@ -121,7 +124,7 @@ public class Modelo {
 
     public List<Vehiculo> getVehiculos() {
         List<Vehiculo> copia = new ArrayList<>();
-        for (Vehiculo vehiculo : vehiculos.get()) {
+        for (Vehiculo vehiculo : IVehiculos.get()) {
             copia.add(vehiculo);
         }
         return copia;
