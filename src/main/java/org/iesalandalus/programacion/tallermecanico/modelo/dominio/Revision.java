@@ -6,7 +6,7 @@ public class Revision extends Trabajo{
 
     private static final float FACTOR_HORA = 35f;
 
-    protected Revision(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio) {
+    public Revision(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio) {
         super(cliente, vehiculo, fechaInicio);
     }
 

@@ -11,7 +11,7 @@ public class Mecanico extends Trabajo{
 
     private float precioMaterial;
 
-    protected Mecanico(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio) {
+    public Mecanico(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio) {
         super(cliente, vehiculo, fechaInicio);
     }
 
