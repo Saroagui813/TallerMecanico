@@ -70,12 +70,12 @@ public class Trabajos implements org.iesalandalus.programacion.tallermecanico.mo
             }
 
             if (trabajo.estaCerrado()) {
-                if (fechaRevision.isAfter(trabajo.getFechaFin())) {
+                if (!trabajo.getFechaFin().isBefore(fechaRevision)) {
                     if (trabajo.getCliente().equals(cliente)) {
-                        throw new TallerMecanicoExcepcion("El cliente tiene una revisión posterior.");
+                        throw new TallerMecanicoExcepcion("El cliente tiene otro trabajo posterior.");
                     }
                     if (trabajo.getVehiculo().equals(vehiculo)) {
-                        throw new TallerMecanicoExcepcion("El vehículo está actualmente en el taller.");
+                        throw new TallerMecanicoExcepcion("El vehículo tiene otro trabajo posterior.");
                     }
                 }
             }
@@ -122,11 +122,7 @@ public class Trabajos implements org.iesalandalus.programacion.tallermecanico.mo
     public Trabajo cerrar(Trabajo trabajo, LocalDate fechaFin) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(trabajo, "No puedo cerrar un trabajo nulo.");
         Trabajo trabajo1 = getTrabajoAbierto(trabajo.getVehiculo());
-        if (fechaFin.isAfter(trabajo1.getFechaFin())) {
-            throw new TallerMecanicoExcepcion("No existe ningún trabajo abierto para dicho vehículo.");
-        } else {
-            trabajo1.cerrar(fechaFin);
-        }
+        trabajo1.cerrar(fechaFin);
         return trabajo1;
     }
 
@@ -134,7 +130,7 @@ public class Trabajos implements org.iesalandalus.programacion.tallermecanico.mo
     public Trabajo buscar(Trabajo trabajo) {
         Objects.requireNonNull(trabajo, "No se puede buscar un trabajo nulo.");
         int indice = coleccionTrabajos.indexOf(trabajo);
-        return coleccionTrabajos.get(indice);
+        return (indice != -1) ? coleccionTrabajos.get(indice) : null;
     }
 
     @Override
