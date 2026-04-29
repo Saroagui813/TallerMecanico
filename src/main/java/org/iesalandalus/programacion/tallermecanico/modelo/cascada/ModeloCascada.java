@@ -20,18 +20,12 @@ import java.util.Objects;
 
 public class ModeloCascada implements Modelo {
 
-    private final FabricaFuenteDatos fabricaFuenteDatos;
     private IClientes clientes;
     private ITrabajos trabajos;
     private IVehiculos vehiculos;
 
     public ModeloCascada(FabricaFuenteDatos fabricaFuenteDatos) {
         Objects.requireNonNull(fabricaFuenteDatos, "La factoria de la fuente de datos no puede ser nula.");
-        this.fabricaFuenteDatos = fabricaFuenteDatos;
-    }
-
-    @Override
-    public void comenzar() {
         IFuenteDatos fuenteDatos = fabricaFuenteDatos.crear();
         clientes = fuenteDatos.crearClientes();
         vehiculos = fuenteDatos.crearVehiculos();
@@ -39,25 +33,27 @@ public class ModeloCascada implements Modelo {
     }
 
     @Override
+    public void comenzar() {
+        System.out.println("Modelo comenzado.");
+    }
+
+    @Override
     public void terminar() {
-        System.out.println("El modelo ha terminado.");
+        System.out.println("Modelo terminado.");
     }
 
     @Override
     public void insertar(Cliente cliente) throws TallerMecanicoExcepcion {
-        Objects.requireNonNull(cliente, "El cliente no puede ser nulo.");
         clientes.insertar(new Cliente(cliente));
     }
 
     @Override
     public void insertar(Vehiculo vehiculo) throws TallerMecanicoExcepcion {
-        Objects.requireNonNull(vehiculo, "El vehículo no puede ser nulo.");
         vehiculos.insertar(vehiculo);
     }
 
     @Override
     public void insertar(Trabajo trabajo) throws TallerMecanicoExcepcion {
-        Objects.requireNonNull(trabajo, "La revisión no puede ser nula.");
         Cliente clienteReal = clientes.buscar(trabajo.getCliente());
         Vehiculo vehiculoReal = vehiculos.buscar(trabajo.getVehiculo());
         if (trabajo instanceof Revision) {
@@ -69,7 +65,6 @@ public class ModeloCascada implements Modelo {
 
     @Override
     public Cliente buscar(Cliente cliente) {
-        Objects.requireNonNull(cliente, "El cliente no puede ser nulo.");
         Cliente encontrado = clientes.buscar(cliente);
         return (encontrado != null) ? new Cliente(encontrado) : null;
     }
@@ -82,7 +77,6 @@ public class ModeloCascada implements Modelo {
 
     @Override
     public Trabajo buscar(Trabajo trabajo) {
-        Objects.requireNonNull(trabajo, "La revisión no puede ser nula.");
         Trabajo encontrado = trabajos.buscar(trabajo);
         return Trabajo.copiar(encontrado);
     }
@@ -98,19 +92,19 @@ public class ModeloCascada implements Modelo {
     @Override
     public Trabajo anadirHoras(Trabajo trabajo, int horas) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(trabajo, "La revisión no puede ser nula.");
-        return Trabajo.copiar(trabajos.anadirHoras(trabajo, horas));
+        return trabajos.anadirHoras(trabajo, horas);
     }
 
     @Override
     public Trabajo anadirPrecioMaterial(Trabajo trabajo, float precioMaterial) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(trabajo, "La revisión no puede ser nula.");
-        return Trabajo.copiar(trabajos.anadirPrecioMaterial(trabajo, precioMaterial));
+        return trabajos.anadirPrecioMaterial(trabajo, precioMaterial);
     }
 
     @Override
     public Trabajo cerrar(Trabajo trabajo, LocalDate fechaFin) throws TallerMecanicoExcepcion {
-        Objects.requireNonNull(trabajo, "La revisión no puede ser nula.");
-        return Trabajo.copiar(trabajos.cerrar(trabajo, fechaFin));
+        Objects.requireNonNull(trabajo, "El trabajo no puede ser nulo.");
+        return trabajos.cerrar(trabajo, fechaFin);
     }
 
     @Override

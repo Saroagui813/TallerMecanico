@@ -37,12 +37,12 @@ public abstract class Trabajo {
     public static Trabajo copiar(Trabajo trabajo) {
         Objects.requireNonNull(trabajo, "El trabajo no puede ser nulo.");
         if (trabajo instanceof Revision revision) {
-            return new Revision(revision);
+            trabajo = new Revision(revision);
         }
         if (trabajo instanceof Mecanico mecanico) {
-            return new Mecanico(mecanico);
+            trabajo = new Mecanico(mecanico);
         }
-        return null;
+        return trabajo;
     }
 
     public static Trabajo get(Vehiculo vehiculo) {

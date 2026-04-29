@@ -1,10 +1,7 @@
 package org.iesalandalus.programacion.tallermecanico.modelo;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.FabricaFuenteDatos;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IClientes;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IVehiculos;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.*;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Clientes;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Trabajos;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Vehiculos;
@@ -34,14 +31,14 @@ class ModeloTest {
 
     private static Cliente cliente;
     private static Vehiculo vehiculo;
-    private static Trabajo trabajo;
+    private static Revision revision;
     private static Mecanico mecanico;
 
     private AutoCloseable procesadorAnotaciones;
     private MockedConstruction<Cliente> controladorCreacionMockCliente;
     private MockedConstruction<Clientes> controladorCreacionMockClientes;
     private MockedConstruction<Vehiculos> controladorCreacionMockVehiculos;
-    private MockedConstruction<Trabajo> controladorCreacionMockRevision;
+    private MockedConstruction<Revision> controladorCreacionMockRevision;
     private MockedConstruction<Mecanico> controladorCreacionMockMecanico;
     private MockedConstruction<Trabajos> controladorCreacionMockTrabajos;
 
@@ -56,10 +53,10 @@ class ModeloTest {
         when(vehiculo.marca()).thenReturn("Seat");
         when(vehiculo.modelo()).thenReturn("León");
         when(vehiculo.matricula()).thenReturn("1234BCD");
-        trabajo = mock();
-        when(trabajo.getCliente()).thenReturn(cliente);
-        when(trabajo.getVehiculo()).thenReturn(vehiculo);
-        when(trabajo.getFechaInicio()).thenReturn(LocalDate.now().minusDays(1));
+        revision = mock();
+        when(revision.getCliente()).thenReturn(cliente);
+        when(revision.getVehiculo()).thenReturn(vehiculo);
+        when(revision.getFechaInicio()).thenReturn(LocalDate.now().minusDays(1));
         mecanico = mock();
         when(mecanico.getCliente()).thenReturn(cliente);
         when(mecanico.getVehiculo()).thenReturn(vehiculo);
@@ -71,7 +68,7 @@ class ModeloTest {
         controladorCreacionMockCliente = mockConstruction(Cliente.class);
         controladorCreacionMockClientes = mockConstruction(Clientes.class);
         controladorCreacionMockVehiculos = mockConstruction(Vehiculos.class);
-        controladorCreacionMockRevision = mockConstruction(Trabajo.class);
+        controladorCreacionMockRevision = mockConstruction(Revision.class);
         controladorCreacionMockMecanico = mockConstruction(Mecanico.class);
         controladorCreacionMockTrabajos = mockConstruction(Trabajos.class);
         procesadorAnotaciones = MockitoAnnotations.openMocks(this);
@@ -116,11 +113,11 @@ class ModeloTest {
         InOrder orden = inOrder(clientes, vehiculos, trabajos);
         when(clientes.buscar(cliente)).thenReturn(cliente);
         when(vehiculos.buscar(vehiculo)).thenReturn(vehiculo);
-        assertDoesNotThrow(() -> modelo.insertar(trabajo));
+        assertDoesNotThrow(() -> modelo.insertar(revision));
         orden.verify(clientes).buscar(cliente);
         orden.verify(vehiculos).buscar(vehiculo);
         assertDoesNotThrow(() -> orden.verify(trabajos).insertar(any(Trabajo.class)));
-        assertDoesNotThrow(() -> verify(trabajos, times(0)).insertar(trabajo));
+        assertDoesNotThrow(() -> verify(trabajos, times(0)).insertar(revision));
     }
 
     @Test
@@ -154,11 +151,11 @@ class ModeloTest {
 
     @Test
     void buscarTrabajoLlamaTrabajosBuscar() {
-        assertDoesNotThrow(() -> modelo.insertar(trabajo));
-        when(trabajos.buscar(trabajo)).thenReturn(trabajo);
-        Trabajo trabajoEncontrada = modelo.buscar(trabajo);
-        verify(trabajos).buscar(trabajo);
-        assertNotSame(trabajo, trabajoEncontrada);
+        assertDoesNotThrow(() -> modelo.insertar(revision));
+        when(trabajos.buscar(revision)).thenReturn(revision);
+        Trabajo trabajoEncontrada = modelo.buscar(revision);
+        verify(trabajos).buscar(revision);
+        assertNotSame(revision, trabajoEncontrada);
     }
 
     @Test
@@ -169,20 +166,20 @@ class ModeloTest {
 
     @Test
     void anadirHorasLlamaTrabajosAnadirHoras() {
-        assertDoesNotThrow(() -> modelo.anadirHoras(trabajo, 10));
-        assertDoesNotThrow(() -> verify(trabajos).anadirHoras(trabajo, 10));
+        assertDoesNotThrow(() -> modelo.anadirHoras(revision, 10));
+        assertDoesNotThrow(() -> verify(trabajos).anadirHoras(revision, 10));
     }
 
     @Test
     void anadirPrecioMateriaLlamaTrabajosAnadirPrecioMaterial() {
-        assertDoesNotThrow(() -> modelo.anadirPrecioMaterial(trabajo, 100f));
-        assertDoesNotThrow(() -> verify(trabajos).anadirPrecioMaterial(trabajo, 100f));
+        assertDoesNotThrow(() -> modelo.anadirPrecioMaterial(revision, 100f));
+        assertDoesNotThrow(() -> verify(trabajos).anadirPrecioMaterial(revision, 100f));
     }
 
     @Test
     void cerrarLlamaTrabajosCerrar() {
-        assertDoesNotThrow(() -> modelo.cerrar(trabajo, LocalDate.now()));
-        assertDoesNotThrow(() -> verify(trabajos).cerrar(trabajo, LocalDate.now()));
+        assertDoesNotThrow(() -> modelo.cerrar(revision, LocalDate.now()));
+        assertDoesNotThrow(() -> verify(trabajos).cerrar(revision, LocalDate.now()));
     }
 
     @Test
@@ -219,8 +216,8 @@ class ModeloTest {
 
     @Test
     void borrarTrabajoLlamaTrabajosBorrar() {
-        assertDoesNotThrow(() -> modelo.borrar(trabajo));
-        assertDoesNotThrow(() -> verify(trabajos).borrar(trabajo));
+        assertDoesNotThrow(() -> modelo.borrar(revision));
+        assertDoesNotThrow(() -> verify(trabajos).borrar(revision));
     }
 
     @Test
@@ -241,26 +238,26 @@ class ModeloTest {
 
     @Test
     void getTrabajosLlamaTrabajosGet() {
-        when(trabajos.get()).thenReturn(new ArrayList<>(List.of(trabajo)));
+        when(trabajos.get()).thenReturn(new ArrayList<>(List.of(revision)));
         List<Trabajo> trabajosExistentes = modelo.getTrabajos();
         verify(trabajos).get();
-        assertNotSame(trabajo, trabajosExistentes.get(0));
+        assertNotSame(revision, trabajosExistentes.get(0));
     }
 
     @Test
     void getTrabajosClienteLlamaTrabajosGetCliente() {
-        when(trabajos.get(cliente)).thenReturn(new ArrayList<>(List.of(trabajo)));
+        when(trabajos.get(cliente)).thenReturn(new ArrayList<>(List.of(revision)));
         List<Trabajo> trabajosCliente = modelo.getTrabajos(cliente);
         verify(trabajos).get(cliente);
-        assertNotSame(trabajo,trabajosCliente.get(0));
+        assertNotSame(revision,trabajosCliente.get(0));
     }
 
     @Test
     void getTrabajosVehiculoLlamaTrabajosGetVehiculo() {
-        when(trabajos.get(vehiculo)).thenReturn(new ArrayList<>(List.of(trabajo)));
+        when(trabajos.get(vehiculo)).thenReturn(new ArrayList<>(List.of(revision)));
         List<Trabajo> trabajosVehiculo = modelo.getTrabajos(vehiculo);
         verify(trabajos).get(vehiculo);
-        assertNotSame(trabajo,trabajosVehiculo.get(0));
+        assertNotSame(revision,trabajosVehiculo.get(0));
     }
 
 }
