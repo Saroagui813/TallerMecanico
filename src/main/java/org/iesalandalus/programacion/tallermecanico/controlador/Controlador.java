@@ -5,7 +5,7 @@ import org.iesalandalus.programacion.tallermecanico.modelo.TallerMecanicoExcepci
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Trabajo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
-import org.iesalandalus.programacion.tallermecanico.vista.Vista;
+import org.iesalandalus.programacion.tallermecanico.vista.texto.VistaTexto;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,22 +16,22 @@ public class Controlador {
     private final Modelo modelo;
     private final Vista vista;
 
-    public Controlador(Modelo modelo, Vista vista) {
+    public Controlador(Modelo modelo, VistaTexto vistaTexto) {
         Objects.requireNonNull(modelo, "ERROR: El modelo no puede ser nulo.");
-        Objects.requireNonNull(vista, "ERROR: La vista no puede ser nula.");
+        Objects.requireNonNull(vistaTexto, "ERROR: La vista no puede ser nula.");
         this.modelo = modelo;
-        this.vista = vista;
-        vista.setControlador(this);
+        this.vista = vistaTexto;
+        vistaTexto.setControlador(this);
     }
 
     public void comenzar() {
         modelo.comenzar();
-        vista.comenzar();
+        vistaTexto.comenzar();
     }
 
     public void terminar() {
         modelo.terminar();
-        vista.terminar();
+        vistaTexto.terminar();
     }
 
     public void insertar(Cliente cliente) throws TallerMecanicoExcepcion {

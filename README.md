@@ -17,7 +17,7 @@ A este precio fijo se le añade el **precio específico** de cada trabajo que se
 También nos comenta que, tanto para **añadir horas a un trabajo**, **añadir precio de material a un trabajo mecánico** o **cerrar un trabajo**, no es operativo la forma en que se venía realizando. Le gustaría que para estas operaciones simplemente pidiese la matrícula del vehículo y el dato en cuestión, ya que un vehículo solo puede tener un trabajo abierto y sería mucho más cómodo para los mecánicos.
 
 Por tanto, todo esto lo abordaremos en este **segundo sprint**. Además, vamos a aprovechar este **sprint** para **refactorizar** lo que llevamos implementado hasta ahora para implementar de una forma adecuada el patrón **Modelo-Vista-Controlador**, ya que prevemos que tendremos varias vistas y varias modelos para nuestra aplicación. Supondremos que en el futuro podremos tener **varios modelos** y que cada uno de ellos puede trabajar con diferentes **fuentes de datos**. También supondremos que tendremos **varias vistas**. Para ello implementaremos los siguientes **patrones de diseño**:
-- **Observador (Observer)**: Utilizado para evitar el mayor problema de diseño en el sprint anterior: la dependencia cíclica que existe entre la vista y el controlador.
+- **Observador (Observer)**: Utilizado para evitar el mayor problema de diseño en el sprint anterior: la dependencia cíclica que existe entre la vistaTexto y el controlador.
 - **Método de fábrica (Factory Method)**: Utilizado para crear las vistas y los modelos. 
 - **Fábrica abstracta (Abstract Factory)**: Para crear las fuentes de datos.
 - **Método plantilla (Template Method)**: Para el cálculo del precio. 
@@ -60,7 +60,7 @@ Para ello te muestro un diagrama de clases (en el que cuando se expresa cardinal
 2. Crea la fábrica de modelos, que por ahora solo tendrá la instancia `CASCADA`.
 3. Comprueba que las clases de este paquete **pasan los tests** y cuando lo hagan haz un **commit**.
 
-#### Adecuación del paquete `vista`
+#### Adecuación del paquete `vistaTexto`
 1. Crea el paquete `eventos` y pasa el enumerado `Opcion` a este paquete. Renombra dicho enumerado a `Evento` y haz que los métodos se adecuen a lo expresado en el diagrama de clases.
 2. Crea la interfaz `ReceptorEventos` tal y como se muestra en el diagrama.
 3. Crea la clase `GestorEventos` que contendrá un mapa asociando a cada evento la lista de subscriptores (objetos que implementen la interfaz `ReceptorEventos`).
@@ -71,7 +71,7 @@ Para ello te muestro un diagrama de clases (en el que cuando se expresa cardinal
 8. Realiza un **commit**.
 
 #### Adecuación del paquete `controlador`
-1. Adecúa la clase `Controlador` a lo expresado en el diagrama. Deberá suscribirse al gestor de eventos de la vista para todos los eventos y en el método `actualizar` los tratará interactuando con la vista y con el modelo para llevar a cabo las diferentes operaciones.
+1. Adecúa la clase `Controlador` a lo expresado en el diagrama. Deberá suscribirse al gestor de eventos de la vistaTexto para todos los eventos y en el método `actualizar` los tratará interactuando con la vistaTexto y con el modelo para llevar a cabo las diferentes operaciones.
 2. Extrae la interfaz `IControlador` de la clase anterior que hereda de la interfaz `ReceptorEventos`.
 3. Realiza un **commit**.
 
