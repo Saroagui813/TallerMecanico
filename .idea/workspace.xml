@@ -4,18 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f8b0e04e-6981-41d9-b2bd-c9ae382a0816" name="Changes" comment="Voy por vista texto">
+    <list default="true" id="f8b0e04e-6981-41d9-b2bd-c9ae382a0816" name="Changes" comment="readme modificado">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/tallermecanico/modelo/dominio/TipoTrabajo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/ModeloTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/ModeloTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/dominio/ClienteTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/dominio/ClienteTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/dominio/MecanicoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/dominio/MecanicoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/dominio/RevisionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/dominio/RevisionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/dominio/TrabajoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/dominio/TrabajoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/dominio/VehiculoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/dominio/VehiculoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/negocio/ClientesTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/negocio/ClientesTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/negocio/TrabajosTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/negocio/TrabajosTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/negocio/VehiculosTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/iesalandalus/programacion/tallermecanico/modelo/negocio/VehiculosTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/tallermecanico/modelo/negocio/memoria/Trabajos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/tallermecanico/modelo/negocio/memoria/Trabajos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/tallermecanico/vista/eventos/Evento.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/iesalandalus/programacion/tallermecanico/vista/eventos/Evento.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/uml/tallerMecanico.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/uml/tallerMecanico.jpg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,8 +54,8 @@
         <option value="JUnit5 Test Class" />
         <option value="Exception" />
         <option value="Class" />
-        <option value="Enum" />
         <option value="Interface" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -79,12 +73,12 @@
     &quot;assignee&quot;: &quot;JRJimenezReyes&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Saroagui813/TallerMecanico.git",
-    "accountId": "5c659f88-3948-45dd-b363-6538c45d5c3d"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Saroagui813/TallerMecanico.git&quot;,
+    &quot;accountId&quot;: &quot;5c659f88-3948-45dd-b363-6538c45d5c3d&quot;
   }
-}]]></component>
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -311,7 +305,23 @@
       <option name="project" value="LOCAL" />
       <updated>1777466215465</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="RAMA FICHEROS">
+      <option name="closed" value="true" />
+      <created>1778065271001</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1778065271001</updated>
+    </task>
+    <task id="LOCAL-00009" summary="readme modificado">
+      <option name="closed" value="true" />
+      <created>1778065325768</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1778065325768</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -335,7 +345,9 @@
     <MESSAGE value="Modificaciones nuevas hechas" />
     <MESSAGE value="Modelo terminado" />
     <MESSAGE value="Voy por vista texto" />
-    <option name="LAST_COMMIT_MESSAGE" value="Voy por vista texto" />
+    <MESSAGE value="RAMA FICHEROS" />
+    <MESSAGE value="readme modificado" />
+    <option name="LAST_COMMIT_MESSAGE" value="readme modificado" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TallerMecanico$RevisionTest.ic" NAME="RevisionTest Coverage Results" MODIFIED="1706862963586" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">

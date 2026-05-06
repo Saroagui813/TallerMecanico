@@ -25,35 +25,35 @@ public enum Evento {
     CERRAR_TRABAJO (40,"Cerrar revisión."),
     SALIR (1,"Salir.");
 
-    private int numeroOpcion;
-    private String mensaje;
+    private int codigo;
+    private String texto;
     static Map<Integer, Evento> eventos = new HashMap<>();
 
     static {
         for (Evento evento : values()) {
-            eventos.put(evento.numeroOpcion, evento);
+            eventos.put(evento.codigo, evento);
         }
     }
 
-    Evento(int numeroOpcion, String mensaje){
-        this.numeroOpcion = numeroOpcion;
-        this.mensaje = mensaje;
+    Evento(int codigo, String texto){
+        this.codigo = codigo;
+        this.texto = texto;
     }
 
-    public static boolean esValida(int numeroOpcion){
-        return eventos.containsKey(numeroOpcion);
+    public static boolean esValida(int codigo){
+        return eventos.containsKey(codigo);
     }
 
-    public static Evento get(int numeroOpcion){
-        if (!esValida(numeroOpcion)){
+    public static Evento get(int codigo){
+        if (!esValida(codigo)){
             throw new IllegalArgumentException("La opción no es válida.");
         }
 
-        return eventos.get(numeroOpcion);
+        return eventos.get(codigo);
     }
 
     @Override
     public String toString() {
-        return String.format("%d.- %s", numeroOpcion, mensaje);
+        return String.format("%d.- %s", codigo, texto);
     }
 }

@@ -6,6 +6,7 @@ import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class Trabajos implements org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos {
@@ -46,6 +47,14 @@ public class Trabajos implements org.iesalandalus.programacion.tallermecanico.mo
             }
         }
         return coleccionResultante;
+    }
+
+    public Map<TipoTrabajo, Integer> getEstadisticasMensuales(LocalDate mes) {
+
+    }
+
+    private Map<TipoTrabajo, Integer> inicializarEstadisticas() {
+
     }
 
     @Override
