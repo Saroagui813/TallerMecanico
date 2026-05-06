@@ -51,6 +51,7 @@ public class Controlador implements IControlador {
                 case LISTAR_TRABAJO -> { modelo.getTrabajos(); vista.notificarResultado(Evento.LISTAR_TRABAJO, "Trabajos listados correctamente",true);}
                 case LISTAR_TRABAJO_CLIENTE -> { modelo.getTrabajos(vista.leerCliente()); vista.notificarResultado(Evento.LISTAR_TRABAJO_CLIENTE, "Trabajos de un cliente listados correctamente",true);}
                 case LISTAR_TRABAJO_VEHICULO -> { modelo.getTrabajos(vista.leerVehiculo()); vista.notificarResultado(Evento.LISTAR_TRABAJO_VEHICULO, "Trabajos de un vehiculo listados correctamente",true);}
+                case MOSTRAR_ESTADISTICAS_MENSUALES -> { vista.mostrarEstadisticasMensuales(modelo.getEstadisticasMensuales(vista.leerMes())); vista.notificarResultado(Evento.MOSTRAR_ESTADISTICAS_MENSUALES, "Estadisticas mensuales correctamente",true); }
                 case SALIR -> terminar();
             }
         } catch (Exception e){

@@ -1,15 +1,14 @@
 package org.iesalandalus.programacion.tallermecanico.vista.texto;
 
 import org.iesalandalus.programacion.tallermecanico.controlador.Controlador;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Revision;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Trabajo;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
+import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.Evento;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.GestorEventos;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class VistaTexto implements Vista {
 
@@ -111,6 +110,11 @@ public class VistaTexto implements Vista {
     }
 
     @Override
+    public LocalDate leerMes() {
+        return Consola.leerFecha("Introduce la fecha para sacar el mes: ");
+    }
+
+    @Override
     public void notificarResultado(Evento evento, String texto, boolean exito) {
         if (exito) {
             System.out.println(texto);
@@ -170,6 +174,14 @@ public class VistaTexto implements Vista {
     @Override
     public void setControlador(Controlador controlador) {
 
+    }
+
+    @Override
+    public void mostrarEstadisticasMensuales(Map<TipoTrabajo, Integer> estadisticas) {
+        Objects.requireNonNull(estadisticas, "La estadística no puede ser nula.");
+        for (Map.Entry<TipoTrabajo, Integer> entrada : estadisticas.entrySet()) {
+            System.out.printf("%s = %d\n", entrada.getKey(), entrada.getValue());
+        }
     }
 
 }

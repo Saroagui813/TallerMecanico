@@ -4,10 +4,7 @@ import org.iesalandalus.programacion.tallermecanico.modelo.TallerMecanicoExcepci
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class Trabajos implements org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos {
 
@@ -49,12 +46,25 @@ public class Trabajos implements org.iesalandalus.programacion.tallermecanico.mo
         return coleccionResultante;
     }
 
+    @Override
     public Map<TipoTrabajo, Integer> getEstadisticasMensuales(LocalDate mes) {
-
+        Objects.requireNonNull(mes, "El mes no puede ser nulo.");
+        Map<TipoTrabajo, Integer> estadisticasMensuales = inicializarEstadisticas();
+        for (Trabajo trabajo : coleccionTrabajos) {
+            if (trabajo.getFechaInicio().getMonthValue() == mes.getMonthValue() && trabajo.getFechaInicio().getYear() == mes.getYear()) {
+                TipoTrabajo tipo = TipoTrabajo.get(trabajo);
+                estadisticasMensuales.put(tipo, estadisticasMensuales.get(tipo) + 1);
+            }
+        }
+        return estadisticasMensuales;
     }
 
     private Map<TipoTrabajo, Integer> inicializarEstadisticas() {
-
+        Map <TipoTrabajo, Integer> estadisticas = new HashMap<>();
+        for (TipoTrabajo tipo : TipoTrabajo.values()) {
+            estadisticas.put(tipo, 0);
+        }
+        return estadisticas;
     }
 
     @Override

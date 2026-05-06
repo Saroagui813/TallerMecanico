@@ -23,6 +23,7 @@ public enum Evento {
     ANADIR_HORAS_TRABAJO (38, "Añadir horas a la revisión."),
     ANADIR_PRECIO_MATERIAL_TRABAJO (39,"Añadir precio material de revisión."),
     CERRAR_TRABAJO (40,"Cerrar revisión."),
+    MOSTRAR_ESTADISTICAS_MENSUALES (41,"Mostrar estadísticas mensuales."),
     SALIR (1,"Salir.");
 
     private int codigo;

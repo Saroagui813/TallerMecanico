@@ -2,11 +2,7 @@ package org.iesalandalus.programacion.tallermecanico.modelo.cascada;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.Modelo;
 import org.iesalandalus.programacion.tallermecanico.modelo.TallerMecanicoExcepcion;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Mecanico;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Revision;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Trabajo;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
+import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.FabricaFuenteDatos;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IClientes;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IFuenteDatos;
@@ -16,6 +12,7 @@ import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IVehiculos;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ModeloCascada implements Modelo {
@@ -176,5 +173,11 @@ public class ModeloCascada implements Modelo {
             copia.add(Trabajo.copiar(trabajo));
         }
         return copia;
+    }
+
+    @Override
+    public Map<TipoTrabajo, Integer> getEstadisticasMensuales(LocalDate mes) {
+        Objects.requireNonNull(mes, "El mes no puede ser nulo.");
+        return trabajos.getEstadisticasMensuales(mes);
     }
 }
