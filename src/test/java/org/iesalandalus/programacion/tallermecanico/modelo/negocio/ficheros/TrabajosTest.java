@@ -1,14 +1,15 @@
-package org.iesalandalus.programacion.tallermecanico.modelo.negocio;
+package org.iesalandalus.programacion.tallermecanico.modelo.negocio.ficheros;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.TallerMecanicoExcepcion;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Trabajos;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -18,7 +19,7 @@ class TrabajosTest {
 
     private static Revision revision;
     private static Mecanico mecanico;
-    private static Trabajo trabajo3;
+    private static Revision trabajo3;
     private static Cliente cliente1;
     private static Cliente cliente2;
     private static Vehiculo vehiculo1;
@@ -47,7 +48,7 @@ class TrabajosTest {
 
     @BeforeEach
     void init() {
-        trabajos = new Trabajos();
+        trabajos = Trabajos.getInstancia();
         revision = mock();
         when(revision.getCliente()).thenReturn(cliente1);
         when(revision.getVehiculo()).thenReturn(vehiculo1);
@@ -60,6 +61,9 @@ class TrabajosTest {
         when(trabajo3.getCliente()).thenReturn(cliente2);
         when(trabajo3.getVehiculo()).thenReturn(vehiculo1);
         when(trabajo3.getFechaInicio()).thenReturn(ayer);
+        for (Trabajo trabajo : trabajos.get()) {
+            assertDoesNotThrow(() -> trabajos.borrar(trabajo));
+        }
     }
 
     @Test
@@ -110,6 +114,28 @@ class TrabajosTest {
         assertSame(revision, trabajosVehiculo.get(0));
         assertEquals(trabajo3, trabajosVehiculo.get(1));
         assertSame(trabajo3,trabajosVehiculo.get(1));
+    }
+
+    @Test
+    void getEstadisticasMensualesMesConTrabajosDevuelveEstadisticasCorrectamente() {
+        assertDoesNotThrow(() -> trabajos.insertar(mecanico));
+        assertDoesNotThrow(() -> trabajos.insertar(trabajo3));
+        Map<TipoTrabajo, Integer> estadisticas = trabajos.getEstadisticasMensuales(ayer);
+        assertEquals(1, estadisticas.get(TipoTrabajo.get(mecanico)));
+        assertEquals(1, estadisticas.get(TipoTrabajo.get(trabajo3)));
+    }
+
+    @Test
+    void getEstadisticasMensualesMesSinTrabajosDevuelveEstadisticasCorrectamente() {
+        Map<TipoTrabajo, Integer> estadisticas = trabajos.getEstadisticasMensuales(ayer);
+        assertEquals(0, estadisticas.get(TipoTrabajo.get(mecanico)));
+        assertEquals(0, estadisticas.get(TipoTrabajo.get(trabajo3)));
+    }
+
+    @Test
+    void getEstadisticasMensualesMesNuloLanzaExcepcion() {
+        NullPointerException npe = assertThrows(NullPointerException.class, () -> trabajos.getEstadisticasMensuales(null));
+        assertEquals("El mes no puede ser nulo.", npe.getMessage());
     }
 
     @Test

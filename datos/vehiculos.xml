@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<vehiculos>
+    <vehiculo marca="Scania" matricula="1234BCD" modelo="Citywide"/>
+    <vehiculo marca="Seat" matricula="1111BBB" modelo="León"/>
+    <vehiculo marca="Renault" matricula="2222CCC" modelo="Megane"/>
+    <vehiculo marca="Mercedes-Benz" matricula="3333DDD" modelo="eSprinter"/>
+</vehiculos>
