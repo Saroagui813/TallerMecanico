@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria;
+package org.iesalandalus.programacion.tallermecanico.modelo.negocio.ficheros;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.TallerMecanicoExcepcion;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
@@ -13,6 +13,16 @@ public class Clientes implements org.iesalandalus.programacion.tallermecanico.mo
 
     public Clientes() {
         coleccionClientes = new ArrayList<>();
+    }
+
+    @Override
+    public void comenzar() {
+        System.out.println("Fichero clientes comenzado.");
+    }
+
+    @Override
+    public void terminar() {
+        System.out.println("Fichero clientes terminado.");
     }
 
     @Override

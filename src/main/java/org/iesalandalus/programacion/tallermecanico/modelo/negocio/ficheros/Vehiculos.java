@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria;
+package org.iesalandalus.programacion.tallermecanico.modelo.negocio.ficheros;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.TallerMecanicoExcepcion;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
@@ -13,6 +13,16 @@ public class Vehiculos implements org.iesalandalus.programacion.tallermecanico.m
 
     public Vehiculos() {
         coleccionVehiculos = new ArrayList<>();
+    }
+
+    @Override
+    public void comenzar() {
+        System.out.println("Fichero vehículos comenzado.");
+    }
+
+    @Override
+    public void terminar() {
+        System.out.println("Fichero vehículos terminado.");
     }
 
     @Override

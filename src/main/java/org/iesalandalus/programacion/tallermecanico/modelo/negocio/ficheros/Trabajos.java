@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria;
+package org.iesalandalus.programacion.tallermecanico.modelo.negocio.ficheros;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.TallerMecanicoExcepcion;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
@@ -12,6 +12,16 @@ public class Trabajos implements org.iesalandalus.programacion.tallermecanico.mo
 
     public Trabajos() {
         coleccionTrabajos = new ArrayList<>();
+    }
+
+    @Override
+    public void comenzar() {
+        System.out.println("Fichero trabajos comenzado.");
+    }
+
+    @Override
+    public void terminar() {
+        System.out.println("Fichero trabajos terminado.");
     }
 
     @Override

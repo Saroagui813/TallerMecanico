@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Map;
 
 public interface ITrabajos {
+    void comenzar();
+
+    void terminar();
+
     List<Trabajo> get();
 
     List<Trabajo> get(Cliente cliente);
