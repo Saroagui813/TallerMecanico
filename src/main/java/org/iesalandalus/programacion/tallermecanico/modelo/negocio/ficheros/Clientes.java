@@ -2,22 +2,66 @@ package org.iesalandalus.programacion.tallermecanico.modelo.negocio.ficheros;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.TallerMecanicoExcepcion;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.swing.text.Document;
+import javax.swing.text.Element;
+import java.io.File;
+import java.lang.annotation.Documented;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 public class Clientes implements org.iesalandalus.programacion.tallermecanico.modelo.negocio.IClientes {
 
-    private List<Cliente> coleccionClientes;
+    public static final String FICHERO_CLIENTES = String.format("%s%s%s", "datos", File.separator, "clientes.xml");
+    public static final String RAIZ = "clientes";
+    public static final String CLIENTE = "cliente";
+    public static final String NOMBRE = "nombre";
+    public static final String DNI = "dni";
+    public static final String TELEFONO = "telefono";
+
+    private final List<Cliente> coleccionClientes;
+    private static Clientes instancia;
 
     public Clientes() {
         coleccionClientes = new ArrayList<>();
     }
 
+    static Clientes getInstancia() {
+        if (instancia == null) {
+            instancia = new Clientes();
+        }
+        return instancia;
+    }
+
     @Override
     public void comenzar() {
-        System.out.println("Fichero clientes comenzado.");
+        Document documentoXml = UtilidadesXml.leerDocumentoXml(FICHERO_CLIENTES);
+        if (documentoXml != null) {
+            procesarDocumentoXml(documentoXml);
+            System.out.printf("Fichero %s leído correctamente.%n", FICHERO_CLIENTES);
+        }
+    }
+
+    private void procesarDocumentoXml(Document documentoXml) {
+        NodeList clientes = documentoXml.getElementsByTagName(CLIENTE);
+        for (int i = 0; i < clientes.getLength(); i++) {
+            Node cliente = clientes.item(i);
+            try {
+                if (cliente.getNodeType() == Node.ELEMENT_NODE) {
+                    insertar(getCliente((Element) cliente));
+                }
+            } catch (TallerMecanicoExcepcion | IllegalArgumentException | NullPointerException e) {
+                System.out.printf("Error al leer el cliente %d. --> %s%n", i, e.getMessage());
+            }
+        }
+    }
+
+    private Cliente getCliente(Element elemento) {
+
     }
 
     @Override

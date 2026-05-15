@@ -12,7 +12,7 @@ import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IVehiculos;
 import java.time.LocalDate;
 import java.util.*;
 
-public class ModeloCascada implements Modelo, org.iesalandalus.programacion.tallermecanico.modelo.cascada.Modelo {
+public class ModeloCascada implements Modelo {
 
     private IClientes clientes;
     private ITrabajos trabajos;
