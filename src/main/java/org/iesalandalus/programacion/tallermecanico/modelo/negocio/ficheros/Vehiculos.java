@@ -24,10 +24,10 @@ public class Vehiculos implements IVehiculos {
     public static final String MODELO = "modelo";
     public static final String MATRICULA = "matricula";
 
-    private List<Vehiculo> coleccionVehiculos;
+    private final List<Vehiculo> coleccionVehiculos;
     private static Vehiculos instancia;
 
-    public Vehiculos() {
+    private Vehiculos() {
         coleccionVehiculos = new ArrayList<>();
     }
 
@@ -79,7 +79,7 @@ public class Vehiculos implements IVehiculos {
         Document documentoXml = null;
         if (constructor != null) {
             documentoXml = constructor.newDocument();
-            documentoXml = appendChild(documentoXml.createElement(RAIZ));
+            documentoXml.appendChild(documentoXml.createElement(RAIZ));
             for (Vehiculo vehiculo : coleccionVehiculos) {
                 Element elemento = getElemento(documentoXml, vehiculo);
                 documentoXml.getDocumentElement().appendChild(elemento);
@@ -90,15 +90,15 @@ public class Vehiculos implements IVehiculos {
 
     private Element getElemento(Document documentoXml, Vehiculo vehiculo) {
         Element elemento = documentoXml.createElement(VEHICULO);
-        elemento.setAttribute(MARCA, vehiculo().marca());
-        elemento.getAttribute(MODELO, vehiculo.modelo());
-        elemento.getAttribute(MATRICULA, vehiculo.matricula());
+        elemento.setAttribute(MARCA, vehiculo.marca());
+        elemento.setAttribute(MODELO, vehiculo.modelo());
+        elemento.setAttribute(MATRICULA, vehiculo.matricula());
         return elemento;
     }
 
     @Override
     public List<Vehiculo> get() {
-        return coleccionVehiculos;
+        return new ArrayList<>(coleccionVehiculos);
     }
 
     @Override

@@ -26,7 +26,7 @@ public class Clientes implements IClientes {
     private final List<Cliente> coleccionClientes;
     private static Clientes instancia;
 
-    public Clientes() {
+    private Clientes() {
         coleccionClientes = new ArrayList<>();
     }
 
@@ -78,7 +78,7 @@ public class Clientes implements IClientes {
         Document documentoXml = null;
         if (constructor != null) {
             documentoXml = constructor.newDocument();
-            documentoXml = appendChild(documentoXml.createElement(RAIZ));
+            documentoXml.appendChild(documentoXml.createElement(RAIZ));
             for (Cliente cliente : coleccionClientes) {
                 Element elemento = getElemento(documentoXml, cliente);
                 documentoXml.getDocumentElement().appendChild(elemento);
@@ -90,14 +90,14 @@ public class Clientes implements IClientes {
     private Element getElemento(Document documentoXml, Cliente cliente) {
         Element elemento = documentoXml.createElement(CLIENTE);
         elemento.setAttribute(NOMBRE, cliente.getNombre());
-        elemento.getAttribute(DNI, cliente.getDni());
-        elemento.getAttribute(TELEFONO, cliente.getTelefono());
+        elemento.setAttribute(DNI, cliente.getDni());
+        elemento.setAttribute(TELEFONO, cliente.getTelefono());
         return elemento;
     }
 
     @Override
     public List<Cliente> get() {
-        return coleccionClientes;
+        return new ArrayList<>(coleccionClientes);
     }
 
     @Override

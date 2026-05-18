@@ -6,7 +6,9 @@ import org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.swing.text.Document;
+import org.w3c.dom.Document;
+import javax.xml.parsers.DocumentBuilder;
+
 import org.w3c.dom.Element;
 import java.io.File;
 import java.time.LocalDate;
@@ -78,13 +80,61 @@ public class Trabajos implements ITrabajos {
             trabajo = new Revision(cliente, vehiculo, fechaInicio);
         } else if (tipo.equals(MECANICO)) {
             trabajo = new Mecanico(cliente, vehiculo, fechaInicio);
-            if (elemento.hasAttr)
+            if (elemento.hasAttribute(PRECIO_MATERIAL)) {
+                ((Mecanico) trabajo).anadirPrecioMaterial(Float.parseFloat(elemento.getAttribute(PRECIO_MATERIAL)));
+            }
         }
+        if (elemento.hasAttribute(HORAS) && trabajo != null) {
+            int horas = Integer.parseInt(elemento.getAttribute(HORAS));
+            trabajo.anadirHoras(horas);
+        }
+        if (elemento.hasAttribute(FECHA_FIN) && trabajo != null) {
+            LocalDate fechaFin = LocalDate.parse(elemento.getAttribute(FECHA_FIN), FORMATO_FECHA);
+            trabajo.cerrar(fechaFin);
+        }
+        return trabajo;
     }
 
     @Override
     public void terminar() {
-        System.out.println("Fichero trabajos terminado.");
+        Document documentoXml = crearDocumentoXml();
+        UtilidadesXml.escribirDocumentoXml(documentoXml, FICHERO_TRABAJOS);
+    }
+
+    private Document crearDocumentoXml() {
+        DocumentBuilder constructor = UtilidadesXml.crearConstructorDocumentoXml();
+        Document documentoXml = null;
+        if (constructor != null) {
+            documentoXml = constructor.newDocument();
+            documentoXml.appendChild(documentoXml.createElement(RAIZ));
+            for (Trabajo trabajo : coleccionTrabajos) {
+                Element elemento = getElemento(documentoXml, trabajo);
+                documentoXml.getDocumentElement().appendChild(elemento);
+            }
+        }
+        return documentoXml;
+    }
+
+    private Element getElemento(Document documentoXml, Trabajo trabajo) {
+        Element elementoTrabajo = documentoXml.createElement(TRABAJO);
+        elementoTrabajo.setAttribute(CLIENTE, trabajo.getCliente().getDni());
+        elementoTrabajo.setAttribute(VEHICULO, trabajo.getVehiculo().matricula());
+        elementoTrabajo.setAttribute(FECHA_INICIO, trabajo.getFechaInicio().format(FORMATO_FECHA));
+        if (trabajo.getFechaFin() != null) {
+            elementoTrabajo.setAttribute(FECHA_FIN, trabajo.getFechaFin().format(FORMATO_FECHA));
+        }
+        if (trabajo.getHoras() != 0) {
+            elementoTrabajo.setAttribute(HORAS, String.format("%d", trabajo.getHoras()));
+        }
+        if (trabajo instanceof Revision) {
+            elementoTrabajo.setAttribute(TIPO, REVISION);
+        } else if (trabajo instanceof Mecanico mecanico) {
+            elementoTrabajo.setAttribute(TIPO, MECANICO);
+            if (mecanico.getPrecioMaterial() != 0) {
+                elementoTrabajo.setAttribute(PRECIO_MATERIAL, String.format(Locale.US, "%f", mecanico.getPrecioMaterial()));
+            }
+        }
+        return elementoTrabajo;
     }
 
     @Override
@@ -122,18 +172,19 @@ public class Trabajos implements ITrabajos {
     @Override
     public Map<TipoTrabajo, Integer> getEstadisticasMensuales(LocalDate mes) {
         Objects.requireNonNull(mes, "El mes no puede ser nulo.");
-        Map<TipoTrabajo, Integer> estadisticasMensuales = inicializarEstadisticas();
+        Map<TipoTrabajo, Integer> estadisticas = inicializarEstadisticas();
         for (Trabajo trabajo : coleccionTrabajos) {
-            if (trabajo.getFechaInicio().getMonthValue() == mes.getMonthValue() && trabajo.getFechaInicio().getYear() == mes.getYear()) {
-                TipoTrabajo tipo = TipoTrabajo.get(trabajo);
-                estadisticasMensuales.put(tipo, estadisticasMensuales.get(tipo) + 1);
+            LocalDate fecha = trabajo.getFechaInicio();
+            if (fecha.getMonthValue() == mes.getMonthValue() && fecha.getYear() == mes.getYear()) {
+                TipoTrabajo tipoTrabajo = TipoTrabajo.get(trabajo);
+                estadisticas.put(tipoTrabajo, estadisticas.get(tipoTrabajo) + 1);
             }
         }
-        return estadisticasMensuales;
+        return estadisticas;
     }
 
     private Map<TipoTrabajo, Integer> inicializarEstadisticas() {
-        Map <TipoTrabajo, Integer> estadisticas = new HashMap<>();
+        Map <TipoTrabajo, Integer> estadisticas = new EnumMap<>(TipoTrabajo.class);
         for (TipoTrabajo tipo : TipoTrabajo.values()) {
             estadisticas.put(tipo, 0);
         }
