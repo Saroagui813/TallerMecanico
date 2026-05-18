@@ -2,27 +2,98 @@ package org.iesalandalus.programacion.tallermecanico.modelo.negocio.ficheros;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.TallerMecanicoExcepcion;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IVehiculos;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import javax.xml.parsers.DocumentBuilder;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Vehiculos implements org.iesalandalus.programacion.tallermecanico.modelo.negocio.IVehiculos {
+public class Vehiculos implements IVehiculos {
+
+    public static final String FICHERO_VEHICULOS = String.format("%s%s%s", "datos", File.separator, "vehiculos.xml");
+    public static final String RAIZ = "vehiculos";
+    public static final String VEHICULO = "vehiculo";
+    public static final String MARCA = "marca";
+    public static final String MODELO = "modelo";
+    public static final String MATRICULA = "matricula";
 
     private List<Vehiculo> coleccionVehiculos;
+    private static Vehiculos instancia;
 
     public Vehiculos() {
         coleccionVehiculos = new ArrayList<>();
     }
 
+    static Vehiculos getInstancia() {
+        if (instancia == null) {
+            instancia = new Vehiculos();
+        }
+        return instancia;
+    }
+
     @Override
     public void comenzar() {
-        System.out.println("Fichero vehículos comenzado.");
+        Document documentoXml = UtilidadesXml.leerDocumentoXml(FICHERO_VEHICULOS);
+        if (documentoXml != null) {
+            procesarDocumentoXml(documentoXml);
+            System.out.printf("Fichero %s leído correctamente.%n", FICHERO_VEHICULOS);
+        }
+    }
+
+    private void procesarDocumentoXml(Document documentoXml) {
+        NodeList vehiculos = documentoXml.getElementsByTagName(VEHICULO);
+        for (int i = 0; i < vehiculos.getLength(); i++) {
+            Node vehiculo = vehiculos.item(i);
+            try {
+                if (vehiculo.getNodeType() == Node.ELEMENT_NODE) {
+                    insertar(getVehiculo((Element) vehiculo));
+                }
+            } catch (TallerMecanicoExcepcion | IllegalArgumentException | NullPointerException e) {
+                System.out.printf("Error al leer el vehículo %d. --> %s%n", i, e.getMessage());
+            }
+        }
+    }
+
+    private Vehiculo getVehiculo(Element elemento) {
+        String marca = elemento.getAttribute(MARCA);
+        String modelo = elemento.getAttribute(MODELO);
+        String matricula = elemento.getAttribute(MATRICULA);
+        return new Vehiculo(marca, modelo, matricula);
     }
 
     @Override
     public void terminar() {
-        System.out.println("Fichero vehículos terminado.");
+        Document documentoXml = crearDocumentoXml();
+        UtilidadesXml.escribirDocumentoXml(documentoXml, FICHERO_VEHICULOS);
+    }
+
+    private Document crearDocumentoXml() {
+        DocumentBuilder constructor = UtilidadesXml.crearConstructorDocumentoXml();
+        Document documentoXml = null;
+        if (constructor != null) {
+            documentoXml = constructor.newDocument();
+            documentoXml = appendChild(documentoXml.createElement(RAIZ));
+            for (Vehiculo vehiculo : coleccionVehiculos) {
+                Element elemento = getElemento(documentoXml, vehiculo);
+                documentoXml.getDocumentElement().appendChild(elemento);
+            }
+        }
+        return documentoXml;
+    }
+
+    private Element getElemento(Document documentoXml, Vehiculo vehiculo) {
+        Element elemento = documentoXml.createElement(VEHICULO);
+        elemento.setAttribute(MARCA, vehiculo().marca());
+        elemento.getAttribute(MODELO, vehiculo.modelo());
+        elemento.getAttribute(MATRICULA, vehiculo.matricula());
+        return elemento;
     }
 
     @Override
